@@ -25,23 +25,30 @@
         </thead>
         <tbody id="courses-table"></tbody>
     </table>
+
     <script>
-        fetch('courses.json')
+        let coursesData = [];
+
+        fetch("courses.json")
             .then(response => response.json())
             .then(data => {
-                let tableBody = document.getElementById("courses-table");
-                data.courses.forEach(course => {
-                    let row = <tr>
-                        <td>${course.year_level}</td>
-                        <td>${course.sem}</td>
-                        <td>${course.code}</td>
-                        <td>${course.description}</td>
-                        <td>${course.credit}</td>
-                    </tr>;
-                    tableBody.innerHTML += row;
-                });
+                coursesData = data.courses;
+                displayCourses(coursesData);
             })
-            .catch(error => console.error('Error fetching JSON:', error));
+            .catch(error => console.error("Error fetching course JSON:", error));
+
+        function displayCourses(courses) {
+            let tableBody = document.getElementById("courses-table");
+            tableBody.innerHTML = courses.map(course => `
+                <tr>
+                    <td>${course.year_level}</td>
+                    <td>${course.sem}</td>
+                    <td>${course.code}</td>
+                    <td>${course.description}</td>
+                    <td>${course.credit}</td>
+                </tr>
+            `).join("");
+        }
     </script>
 </body>
 </html>
